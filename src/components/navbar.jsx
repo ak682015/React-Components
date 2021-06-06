@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-const NavBar = ({ totalCounters }) => {
+const NavBar = () => {
     return(
         <React.Fragment>
-            <nav className="navbar navbar-light bg-light">
-                <a href="#" className="navbar-brand">Navbar
-                    <span className="btn btn-secondary">{totalCounters}</span>
-                </a>
-            </nav>
+            <ul>
+                <li>
+                    <Link to="/"> Home</Link>
+                </li>
+                <li>
+                    <Link to="/products"> Products</Link>
+                </li>
+                <li>
+                    <Link to="/posts"> Posts</Link>
+                </li>
+                <li>
+                    <Link to="/dashboard"> Admin</Link>
+                </li>
+
+            </ul>
         </React.Fragment>
     )
 }

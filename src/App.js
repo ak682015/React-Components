@@ -5,6 +5,11 @@ import NavBar from './components/navbar'
 import Counters from './components/counters';
 import Movies from './components/movies';
 
+import {Route, Switch} from 'react-router-dom';
+import Home from './components/home';
+import Products from './components/products';
+import ProductDetails from './components/productDetails';
+import Posts from './components/posts';
 
 class App extends Component {
     state = {
@@ -56,17 +61,18 @@ class App extends Component {
 
         return (
           <React.Fragment>
-              {/*<NavBar totalCounters={this.state.counters.filter(c => c.value > 0).length}/>*/}
+              <NavBar/>
                 <main className="container">
-                    <Movies />
-                    {/*<Counters*/}
-                    {/*    counters = {this.state.counters}*/}
-                    {/*    onReset={this.handleReset}*/}
-                    {/*    onIncrement={this.handleIncrement}*/}
-                    {/*    onDelete={this.handleDelete}*/}
-                    {/*    onDecrement={this.handleDecrement}*/}
-                    {/*/>*/}
+                    <div className="content">
+                        <Switch>
+                            <Route path="/product/:id" component={ProductDetails} />
+                            <Route path="/products" render={ (props) => <Products sortBy="newest" {...props}/>} />
+                            <Route path="/posts/:year?/:month?" component={Posts} />
+                            {/*<Route path="/admin" component={Dashboard} />*/}
+                            <Route path="/" component={Home} />
+                        </Switch>
 
+                    </div>
                 </main>
           </React.Fragment>
   );
