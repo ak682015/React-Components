@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import queryString from 'query-string';
 
-const Posts = ({ match }) => {
+const Posts = ({ match, location  }) => {
+    const result = queryString.parse(location.search);
+    console.log(result);
         return(
             <React.Fragment>
                 <div>
