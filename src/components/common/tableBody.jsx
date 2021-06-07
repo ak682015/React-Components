@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 
 class TableBody extends Component {
 
@@ -19,7 +20,9 @@ class TableBody extends Component {
                 {rows.map(row => (
                     <tr key={row._id}>
                         {columns.map(column => (
-                            <td key={this.createKey(row, column)} >{this.renderCell(row, column)}</td>
+                            <td key={this.createKey(row, column)} >
+                                    {this.renderCell(row, column)}
+                            </td>
                         ))}
                     </tr>
                 ))}
