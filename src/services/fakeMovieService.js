@@ -82,15 +82,18 @@ export function getMovie(id) {
 }
 
 export function saveMovie(movie) {
+  console.log("dfs",movie);
   let movieInDb = movies.find(m => m._id === movie._id) || {};
-  movieInDb.name = movie.name;
-  movieInDb.genre = genresAPI.genres.find(g => g._id === movie.genreId);
+  movieInDb.title = movie.name;
+  movieInDb.genre = genresAPI.genres.find(g => g.name === movie.genre);
   movieInDb.numberInStock = movie.numberInStock;
   movieInDb.dailyRentalRate = movie.dailyRentalRate;
+  console.log("dfdasfdfass",movieInDb);
 
   if (!movieInDb._id) {
     movieInDb._id = Date.now();
     movies.push(movieInDb);
+    console.log('movie added');
   }
 
   return movieInDb;
