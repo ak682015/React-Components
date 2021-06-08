@@ -8,6 +8,7 @@ import List from "./common/list";
 import MoviesTable from "./moviesTable";
 import _ from 'lodash';
 import {Link} from 'react-router-dom';
+import SearchBox from "./common/searchBox";
 
 class Movie extends Component{
     state= {
@@ -16,6 +17,8 @@ class Movie extends Component{
         currentPage : 1,
         pageSize : 4,
         sortColumn: {path:'title', order: 'asc'},
+        selectedGenre: null,
+        searchQuery: "",
     };
 
     // handleDelete = movie => {
@@ -40,8 +43,14 @@ class Movie extends Component{
     }
 
     handleGenreClick = genre => {
-        this.setState({selectedGenre : genre, currentPage: 1});
+        this.setState({selectedGenre : genre, searchQuery:"", currentPage: 1});
     }
+
+
+    handleSearch = query => {
+        this.setState({ searchQuery: query, selectedGenre: null,  currentPage: 1});
+    }
+
 
     handleSort = sortColumn => {
         this.setState({sortColumn : sortColumn});
@@ -53,10 +62,13 @@ class Movie extends Component{
     }
 
     getPageData = () => {
-        const { pageSize, currentPage, selectedGenre ,sortColumn, movies: allMovies } = this.state;
-        const filtered = selectedGenre && selectedGenre._id
-            ? allMovies.filter( m=> m.genre._id === selectedGenre._id)
-            : allMovies;
+        const { pageSize, currentPage, selectedGenre ,sortColumn, searchQuery ,movies: allMovies } = this.state;
+        let filtered = allMovies;
+
+        if (searchQuery){
+            filtered= allMovies.filter( m=> m.title.toLowerCase().startsWith(searchQuery.toLowerCase()))
+        }else if (selectedGenre && selectedGenre._id)
+            filtered = allMovies.filter( m=> m.genre._id === selectedGenre._id)
 
         const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
         const movies = paginate(sorted, currentPage, pageSize);
@@ -65,6 +77,8 @@ class Movie extends Component{
 
     }
 
+
+
     render(){
 
         const {length :count } = this.state.movies;
@@ -72,7 +86,7 @@ class Movie extends Component{
         if(count === 0){
             return <p>No movies</p>;
         }
-        const {totalCount, data:movies} = this.getPageData();
+        const {totalCount, searchQuery ,data:movies} = this.getPageData();
           
         return (
 
@@ -88,11 +102,14 @@ class Movie extends Component{
                         </div>
                         <div className="col-9">
                             <Link
-                                to={'/new'}
+                                to={'/movies/new'}
                                 className="btn btn-primary">
                                 New Movie
                             </Link>
                             <h1>Total number of movies {totalCount}</h1>
+
+                             <SearchBox value={searchQuery} onChange={this.handleSearch} />
+
                             <MoviesTable
                                 movies={movies}
                                 onLike={this.handleLike}
